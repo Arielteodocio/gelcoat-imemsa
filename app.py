@@ -223,7 +223,7 @@ def _curva_pr(precisions, recalls, thresholds_pr, umbral_actual) -> go.Figure:
         yaxis=dict(range=[0, 1.05], showgrid=True, gridcolor="#F1F5F9"),
         height=350, paper_bgcolor="white", plot_bgcolor="white",
         legend=dict(orientation="h", y=-0.15),
-        font=dict(size=12),
+        font=dict(size=12, color="#1E293B"),
     )
     return fig
 
@@ -250,7 +250,7 @@ def _curva_roc(fpr, tpr, roc_auc) -> go.Figure:
         yaxis=dict(range=[0, 1.02], showgrid=True, gridcolor="#F1F5F9"),
         height=350, paper_bgcolor="white", plot_bgcolor="white",
         legend=dict(orientation="h", y=-0.18),
-        font=dict(size=12),
+        font=dict(size=12, color="#1E293B"),
     )
     return fig
 
@@ -276,11 +276,11 @@ def _metricas_vs_umbral(df_metricas: pd.DataFrame, umbral_actual: float) -> go.F
     fig.update_layout(
         title="Métricas vs umbral de clasificación",
         xaxis_title="Umbral", yaxis_title="Métrica",
-        xaxis=dict(showgrid=True, gridcolor="#F1F5F9"),
-        yaxis=dict(range=[0, 1.05], showgrid=True, gridcolor="#F1F5F9"),
+        xaxis=dict(showgrid=True, gridcolor="#F1F5F9", tickfont=dict(color="#1E293B"), title_font=dict(color="#1E293B")),
+        yaxis=dict(range=[0, 1.05], showgrid=True, gridcolor="#F1F5F9", tickfont=dict(color="#1E293B"), title_font=dict(color="#1E293B")),
         height=350, paper_bgcolor="white", plot_bgcolor="white",
-        legend=dict(orientation="h", y=-0.18),
-        font=dict(size=12),
+        legend=dict(orientation="h", y=-0.18, font=dict(color="#1E293B")),
+        font=dict(size=12, color="#1E293B"),
     )
     return fig
 
@@ -342,7 +342,7 @@ def pagina_dashboard():
             height=280, paper_bgcolor="white", plot_bgcolor="white",
             xaxis=dict(showgrid=True, gridcolor="#F1F5F9"),
             yaxis=dict(showgrid=True, gridcolor="#F1F5F9", range=[0, 105]),
-            showlegend=False, font=dict(size=12),
+            showlegend=False, font=dict(size=12, color="#1E293B"),
         )
         st.plotly_chart(fig_trend, use_container_width=True)
 
@@ -360,7 +360,7 @@ def pagina_dashboard():
         fig_pie.update_layout(
             title="Distribución de niveles de riesgo",
             height=280, paper_bgcolor="white",
-            showlegend=False, font=dict(size=12),
+            showlegend=False, font=dict(size=12, color="#1E293B"),
             margin=dict(t=40, b=0, l=0, r=0),
         )
         st.plotly_chart(fig_pie, use_container_width=True)
@@ -381,7 +381,9 @@ def pagina_dashboard():
                                title="Tasa de defectos por turno (%)")
             fig_turno.update_layout(height=260, paper_bgcolor="white",
                                     plot_bgcolor="white", coloraxis_showscale=False,
-                                    font=dict(size=12))
+                                    font=dict(size=12, color="#1E293B"),
+                                    xaxis=dict(tickfont=dict(color="#1E293B"), title_font=dict(color="#1E293B")),
+                                    yaxis=dict(tickfont=dict(color="#1E293B"), title_font=dict(color="#1E293B")))
             st.plotly_chart(fig_turno, use_container_width=True)
 
     with col_d:
@@ -399,7 +401,9 @@ def pagina_dashboard():
                               title="Probabilidad media por operador (%)")
             fig_oper.update_layout(height=260, paper_bgcolor="white",
                                    plot_bgcolor="white", coloraxis_showscale=False,
-                                   yaxis=dict(autorange="reversed"), font=dict(size=12))
+                                   yaxis=dict(autorange="reversed", tickfont=dict(color="#1E293B"), title_font=dict(color="#1E293B")),
+                                   xaxis=dict(tickfont=dict(color="#1E293B"), title_font=dict(color="#1E293B")),
+                                   font=dict(size=12, color="#1E293B"))
             st.plotly_chart(fig_oper, use_container_width=True)
 
 
