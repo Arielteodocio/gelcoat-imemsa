@@ -14,10 +14,20 @@ from sklearn.metrics import (
     recall_score, precision_score, f1_score, roc_auc_score
 )
 
-# ── Rutas ─────────────────────────────────────────────────────────────────────
-MODEL_DIR  = Path(__file__).parent / "modelo_produccion"
-PKL_PATH   = MODEL_DIR / "pipeline_gelcoat.pkl"
-META_PATH  = MODEL_DIR / "metadatos_modelo.pkl"
+# ── Rutas — busca los .pkl en la raíz del repo O en modelo_produccion/ ────────
+_BASE = Path(__file__).parent
+
+def _buscar_pkl(nombres):
+    """Busca el archivo probando varios nombres y ubicaciones."""
+    for carpeta in [_BASE, _BASE / "modelo_produccion"]:
+        for nombre in nombres:
+            ruta = carpeta / nombre
+            if ruta.exists():
+                return ruta
+    return _BASE / nombres[0]  # ruta preferida (para el mensaje de error)
+
+PKL_PATH  = _buscar_pkl(["pipeline_gelcoat.pkl", "Pipeline_gelcoat.pkl"])
+META_PATH = _buscar_pkl(["metadatos_modelo.pkl",  "Metadatos_modelo.pkl"])
 
 # ── Opciones válidas para variables categóricas ───────────────────────────────
 OPCIONES = {
@@ -263,3 +273,4 @@ def analizar_umbral(pipeline, metadatos: dict, X_test: pd.DataFrame,
         "roc_auc":         round(roc_auc, 4),
         "metricas_umbral": filas,
     }
+
