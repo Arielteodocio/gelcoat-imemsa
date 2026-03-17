@@ -172,10 +172,7 @@ def predecir(datos: dict, pipeline, metadatos: dict) -> dict:
     # Probabilidad de defecto
     prob = float(pipeline.predict_proba(X_input)[0, 1])
 
-    # Clasificación
-    clasificacion = int(prob >= umbral_produccion)
-
-    # Semáforo
+    # Semáforo (se calcula primero para que clasificacion sea consistente)
     if prob < NIVEL_BAJO:
         nivel  = "BAJO"
         color  = "green"
@@ -191,6 +188,10 @@ def predecir(datos: dict, pipeline, metadatos: dict) -> dict:
         color  = "red"
         emoji  = "🔴"
         accion = "¡DETENER! Corregir parámetros antes de aplicar el gel coat."
+
+    # Clasificación — consistente con el semáforo:
+    # solo cuenta como defecto cuando el nivel es ALTO
+    clasificacion = 1 if nivel == "ALTO" else 0
 
     # Top factores de riesgo
     modelo = pipeline.named_steps["model"]
