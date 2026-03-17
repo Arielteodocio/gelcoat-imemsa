@@ -32,7 +32,7 @@ META_PATH = _buscar_pkl(["metadatos_modelo.pkl",  "Metadatos_modelo.pkl"])
 # ── Opciones válidas para variables categóricas ───────────────────────────────
 OPCIONES = {
     "shift":                  ["mañana", "tarde", "noche"],
-    "boat_model":             ["IM-15","IM-18","IM-22","IM-25","IM-28","IM-30","IM-32","IM-35"],
+    "boat_model":             ["R-14","W-16","R-18","J-18","W-22","W-22 BA","R-22","W-23 II","W-23 M","W-25","W-25 BA","W-26","W-26 BA","W-267","W-29","W-33","IM-22","IM-28-A"],
     "compressor_oil_level":   ["alto", "medio", "bajo"],
     "air_hose_status":        ["ok", "desgaste", "fuga"],
     "catalyst_filter_status": ["ok", "requiere_cambio"],
@@ -117,7 +117,10 @@ def construir_dataframe(datos: dict, feature_names: list) -> pd.DataFrame:
             fila[col] = 1 if valor_actual == categoria else 0
         else:
             val = d.get(col, 0)
-            fila[col] = float(val) if val not in (None, "") else 0.0
+            try:
+                fila[col] = float(val) if val not in (None, "") else 0.0
+            except (ValueError, TypeError):
+                fila[col] = 0.0
 
     return pd.DataFrame([fila], columns=feature_names)
 
@@ -273,4 +276,3 @@ def analizar_umbral(pipeline, metadatos: dict, X_test: pd.DataFrame,
         "roc_auc":         round(roc_auc, 4),
         "metricas_umbral": filas,
     }
-
