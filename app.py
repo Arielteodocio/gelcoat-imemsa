@@ -182,16 +182,18 @@ def _barras_factores(factores: list) -> go.Figure:
         marker_color=colores,
         text=[f"{v:.3f}" for v in df["importancia"]],
         textposition="outside",
+        textfont=dict(color="#1E293B", size=12),
     ))
     fig.update_layout(
-        title="Variables de mayor influencia",
+        title=dict(text="Variables de mayor influencia", font=dict(color="#1E293B", size=14)),
         height=320,
-        margin=dict(t=40, b=10, l=10, r=60),
+        margin=dict(t=40, b=10, l=10, r=70),
         paper_bgcolor="white",
         plot_bgcolor="white",
-        xaxis=dict(showgrid=True, gridcolor="#F1F5F9", zeroline=False),
-        yaxis=dict(autorange="reversed"),
-        font=dict(size=12),
+        xaxis=dict(showgrid=True, gridcolor="#F1F5F9", zeroline=False,
+                   tickfont=dict(color="#1E293B"), title_font=dict(color="#1E293B")),
+        yaxis=dict(autorange="reversed", tickfont=dict(color="#1E293B")),
+        font=dict(size=12, color="#1E293B"),
     )
     return fig
 
@@ -435,7 +437,7 @@ def pagina_prediccion():
         st.divider()
 
         # ── SECCIÓN 3: Equipo de spray ────────────────────────────────────────
-        st.markdown("#### 🔧 Equipo de spray")
+        st.markdown("#### 🔧 Parámetros de Gelcotera")
         c1, c2, c3, c4, c5 = st.columns(5)
         main_pressure  = c1.number_input("Presión principal (psi) *", 0, 200, 62)
         fan_pressure   = c2.number_input("Presión abanico (psi) *",   0, 100, 24)
@@ -589,6 +591,12 @@ def pagina_prediccion():
             df_fac = pd.DataFrame(resultado["factores"])
             df_fac["importancia"] = df_fac["importancia"].round(4)
             st.dataframe(df_fac, use_container_width=True, hide_index=True)
+
+        # Botón Abrir Candado
+        st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
+        col_btn, _, _ = st.columns([1, 1, 1])
+        with col_btn:
+            st.button("🔓  Abrir Candado", use_container_width=True)
 
 
 # =============================================================================
